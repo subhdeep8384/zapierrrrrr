@@ -15,7 +15,8 @@ app.post("/hooks/catch/:userId/:zapId" ,async (req , res ) => {
     const body = req.body ;
     // store trigger into the db 
 
-    try{  await client.$transaction(async (tx)=>{
+    try{  
+        await client.$transaction(async (tx)=>{
         const run = await tx.zapRun.create({
             data:{
                 zapId : zapId ,
@@ -29,13 +30,14 @@ app.post("/hooks/catch/:userId/:zapId" ,async (req , res ) => {
             }
         })
     })
-    res.send("done")
-    }catch(e){
+        res.send("done")
+    }
+    catch(e){
         res.json(e)
-    console.log(e)
+        console.log(e)
     }  
-    
     // push it into kafka or redis
+    
 })
 
 app.listen(PORT , ()=>{

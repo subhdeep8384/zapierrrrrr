@@ -42,6 +42,7 @@ app.post("/hooks/catch/:userId/:zapId", (req, res) => __awaiter(void 0, void 0, 
         res.send("done");
     }
     catch (e) {
+        res.json(e);
         console.log(e);
     }
     // push it into kafka or redis
