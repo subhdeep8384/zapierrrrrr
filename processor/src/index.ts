@@ -10,30 +10,39 @@ const kafka = new Kafka({
 })
 
 async function processor(){
-    const producer = kafka.producer() 
-    await producer.connect()
-
-    while( true ){
-        const pendingRows = await client.zapRunOutbox.findMany({
-            where :{} ,
-            take : 10 ,
-        })
-
-        producer.send({
-            topic : TOPIC_NAME ,
-            messages: pendingRows.map((row) => ({
-                value: row.zapRunId, 
-            }))
-        })
-
-        await client.zapRunOutbox.deleteMany({
-            where :{
-                id : {
-                    in : pendingRows.map(row => row.id)
+   
+        const producer = kafka.producer() 
+        await producer.connect()
+    
+        while( true ){
+            try{
+                const pendingRows = await client.zapRunOutbox.findMany({
+                where :{} ,
+                take : 10 ,
+            })
+    
+            producer.send({
+                topic : TOPIC_NAME ,
+                messages: pendingRows.map((row) => ({
+                    value: row.zapRunId, 
+                })) ,
+            })
+            await client.zapRunOutbox.deleteMany({
+                where :{
+                    id : {
+                        in : pendingRows.map(row => row.id)
+                    }
                 }
-            }
-        })
-    }
+            })
+    
+            await new Promise((r) => setTimeout(r , 10000))
+            console.log("ten object have sended" , pendingRows)
+        }
+        catch(e){
+            console.log(e)
+        }
+        }
+  
 }
 
-processor() 
+ processor() 

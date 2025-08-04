@@ -38,6 +38,7 @@ app.post("/hooks/catch/:userId/:zapId", (req, res) => __awaiter(void 0, void 0, 
                     zapRunId: run.id,
                 }
             });
+            console.log("request sended please wait for sometime to get thing resolved");
         }));
         res.send("done");
     }

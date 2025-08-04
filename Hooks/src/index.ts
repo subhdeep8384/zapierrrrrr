@@ -29,6 +29,7 @@ app.post("/hooks/catch/:userId/:zapId" ,async (req , res ) => {
                 zapRunId : run.id ,
             }
         })
+        console.log("request sended please wait for sometime to get thing resolved")
     })
         res.send("done")
     }

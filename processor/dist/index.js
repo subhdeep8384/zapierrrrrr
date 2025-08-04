@@ -22,23 +22,30 @@ function processor() {
         const producer = kafka.producer();
         yield producer.connect();
         while (true) {
-            const pendingRows = yield client.zapRunOutbox.findMany({
-                where: {},
-                take: 10,
-            });
-            producer.send({
-                topic: TOPIC_NAME,
-                messages: pendingRows.map((row) => ({
-                    value: row.zapRunId,
-                }))
-            });
-            yield client.zapRunOutbox.deleteMany({
-                where: {
-                    id: {
-                        in: pendingRows.map(row => row.id)
+            try {
+                const pendingRows = yield client.zapRunOutbox.findMany({
+                    where: {},
+                    take: 10,
+                });
+                producer.send({
+                    topic: TOPIC_NAME,
+                    messages: pendingRows.map((row) => ({
+                        value: row.zapRunId,
+                    })),
+                });
+                yield client.zapRunOutbox.deleteMany({
+                    where: {
+                        id: {
+                            in: pendingRows.map(row => row.id)
+                        }
                     }
-                }
-            });
+                });
+                yield new Promise((r) => setTimeout(r, 10000));
+                console.log("ten object have sended", pendingRows);
+            }
+            catch (e) {
+                console.log(e);
+            }
         }
     });
 }
