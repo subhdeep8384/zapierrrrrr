@@ -21,12 +21,13 @@ async function processor(){
                 take : 10 ,
             })
     
-            producer.send({
+            await producer.send({
                 topic : TOPIC_NAME ,
                 messages: pendingRows.map((row) => ({
                     value: row.zapRunId, 
                 })) ,
             })
+
             await client.zapRunOutbox.deleteMany({
                 where :{
                     id : {
@@ -35,7 +36,7 @@ async function processor(){
                 }
             })
     
-            await new Promise((r) => setTimeout(r , 10000))
+            await new Promise((r) => setTimeout(r , 20000))
             console.log("ten object have sended" , pendingRows)
         }
         catch(e){
@@ -45,4 +46,4 @@ async function processor(){
   
 }
 
- processor() 
+processor() 

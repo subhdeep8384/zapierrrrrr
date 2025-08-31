@@ -1,5 +1,6 @@
 import express from "express" ;
 import  { PrismaClient } from "@prisma/client"
+
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -29,7 +30,9 @@ app.post("/hooks/catch/:userId/:zapId" ,async (req , res ) => {
                 zapRunId : run.id ,
             }
         })
-        console.log("request sended please wait for sometime to get thing resolved")
+        res.json({
+            message : "request sended please wait for sometime to get thing resolved" 
+        })
     })
         res.send("done")
     }

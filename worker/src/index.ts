@@ -18,7 +18,7 @@ async function worker(){
     }) 
 
     await consumer.connect() 
-    await consumer.subscribe({topic: 'zap-events' , fromBeginning : true })
+    await consumer.subscribe({topic: TOPIC_NAME , fromBeginning : true })
     await consumer.run({
         autoCommit : false ,
         eachMessage: async ({ topic : TOPIC_NAME , partition, message }) => {
