@@ -23,7 +23,7 @@ function worker() {
             groupId: 'main-worker'
         });
         yield consumer.connect();
-        yield consumer.subscribe({ topic: 'zap-events', fromBeginning: true });
+        yield consumer.subscribe({ topic: TOPIC_NAME, fromBeginning: true });
         yield consumer.run({
             autoCommit: false,
             eachMessage: (_a) => __awaiter(this, [_a], void 0, function* ({ topic: TOPIC_NAME, partition, message }) {

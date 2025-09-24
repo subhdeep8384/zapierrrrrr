@@ -27,7 +27,7 @@ function processor() {
                     where: {},
                     take: 10,
                 });
-                producer.send({
+                yield producer.send({
                     topic: TOPIC_NAME,
                     messages: pendingRows.map((row) => ({
                         value: row.zapRunId,
@@ -40,7 +40,7 @@ function processor() {
                         }
                     }
                 });
-                yield new Promise((r) => setTimeout(r, 10000));
+                yield new Promise((r) => setTimeout(r, 20000));
                 console.log("ten object have sended", pendingRows);
             }
             catch (e) {

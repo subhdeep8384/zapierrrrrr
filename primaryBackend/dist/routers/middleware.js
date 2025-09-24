@@ -7,7 +7,6 @@ exports.authMiddleware = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const config_1 = require("../config");
 const authMiddleware = (req, res, next) => {
-    console.log("inside auth middleware");
     const token = req.cookies.token;
     if (!token) {
         return res.status(401).json("Unauthorized");
@@ -17,7 +16,8 @@ const authMiddleware = (req, res, next) => {
         if (!decoded) {
             return res.status(401).json("Unauthorized");
         }
-        console.log("inside auth middleware");
+        // @ts-ignore
+        req.id = decoded.id;
         next();
     }
     catch (e) {

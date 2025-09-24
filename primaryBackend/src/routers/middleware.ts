@@ -5,7 +5,6 @@ import { JWT_PASSWORD } from "../config";
 
 
 export const authMiddleware = (req : Request , res : Response , next : NextFunction) =>{
-    console.log("inside auth middleware")
     const token = req.cookies.token ;
     if(!token){
         return res.status(401).json("Unauthorized")
@@ -13,13 +12,12 @@ export const authMiddleware = (req : Request , res : Response , next : NextFunct
 
     try{
         const decoded = jwt.verify(token , JWT_PASSWORD);
-
         if(!decoded){
             return res.status(401).json("Unauthorized")
         }
-        console.log("inside auth middleware")
+        // @ts-ignore
+        req.id = decoded.id ;
         next()
-
     }
     catch(e){
         res.status(400).json({

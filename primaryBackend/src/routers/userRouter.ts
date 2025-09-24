@@ -28,19 +28,19 @@ router.post("/signup" ,async (req , res )=>{
     })
 
     if( !userExists ){
-        const newUser =await prismaClient.user.create({
+        const newUser = await prismaClient.user.create({
             data : parsedData.data ,
         })
 
         return res.status(200).json({
             message : "User created successfully" ,
             status : 200 ,
-            data : newUser ,
+            data : newUser.username ,
         })
     }
 })
 
-router.get("/signin",async (req , res ) =>{
+router.get("/signin", async (req , res ) =>{
     const body = req.body;
     const parsedData = signInSchema.safeParse(body);
     if(!parsedData.success){
@@ -53,8 +53,8 @@ router.get("/signin",async (req , res ) =>{
         } ,
         select:{
             id :true  ,
-            password : true ,
-            username : true  ,
+            username : true ,
+            password : true 
         }
     })
     if( !userExists ){
@@ -68,10 +68,14 @@ router.get("/signin",async (req , res ) =>{
 
     res.cookie("token" , token ) ;
     
-    res.status(200).json({message :"login successful"})
+    res.status(200).json(
+        {message :"login successful"}
+    )
 })
 
-router.get("/" , authMiddleware  , (req , res )=>{
-    res.send("user")
+router.get("/me" , authMiddleware  , (req , res )=>{
+    const body = req.body ;
+    res.send(body)
 })
+
 export const userRouter = router;

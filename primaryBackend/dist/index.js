@@ -13,8 +13,8 @@ app.use((0, cookie_parser_1.default)());
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 app.use('/api/v1/user', userRouter_1.userRouter);
-app.use('/api/vi/zap', zapRouter_1.zapRouter);
-const port = process.env.PORT || 3000;
+app.use('/api/v1/zap', zapRouter_1.zapRouter);
+const port = process.env.PORT || 5000;
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });

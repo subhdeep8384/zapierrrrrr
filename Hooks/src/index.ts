@@ -33,9 +33,7 @@ app.post("/hooks/catch/:userId/:zapId" ,async (req , res ) => {
         res.json({
             message : "request sended please wait for sometime to get thing resolved" 
         })
-    })
-        res.send("done")
-    }
+    }) }
     catch(e){
         res.json(e)
         console.log(e)

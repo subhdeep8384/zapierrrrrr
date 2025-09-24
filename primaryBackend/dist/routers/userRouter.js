@@ -43,7 +43,7 @@ router.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0, function*
         return res.status(200).json({
             message: "User created successfully",
             status: 200,
-            data: newUser,
+            data: newUser.username,
         });
     }
 }));
@@ -59,8 +59,8 @@ router.get("/signin", (req, res) => __awaiter(void 0, void 0, void 0, function* 
         },
         select: {
             id: true,
-            password: true,
             username: true,
+            password: true
         }
     });
     if (!userExists) {
@@ -73,7 +73,8 @@ router.get("/signin", (req, res) => __awaiter(void 0, void 0, void 0, function* 
     res.cookie("token", token);
     res.status(200).json({ message: "login successful" });
 }));
-router.get("/", middleware_1.authMiddleware, (req, res) => {
-    res.send("user");
+router.get("/me", middleware_1.authMiddleware, (req, res) => {
+    const body = req.body;
+    res.send(body);
 });
 exports.userRouter = router;

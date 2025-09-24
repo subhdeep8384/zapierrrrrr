@@ -17,3 +17,14 @@ export const signUpSchema = z.object({
     name : z.string().min(5) ,
     email : z.string().min(5) ,
 })
+
+
+export const zapCreateSchema = z.object({
+    userId : z.number() ,
+    availableTriggerId : z.string() ,
+    triggerMetadata : z.object().optional() ,
+    actions : z.array(z.object({
+        availableActionId : z.string() ,
+        actionMetadata : z.object().optional() ,
+    }))
+})
