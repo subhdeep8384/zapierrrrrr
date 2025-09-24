@@ -1,10 +1,9 @@
 "use client";
 import React from 'react'
 import Image from 'next/image'
-import { BiLogoGmail } from 'react-icons/bi';
-import LinkButton from './Buttons/LinkButton';
-import PrimaryButton from './Buttons/PrimaryButton';
 import { useRouter } from 'next/navigation';
+import SignInButtons from './Buttons/SignInButtons';
+import Features from './Features';
 const HeroSection = () => {
   const router = useRouter()
   return (
@@ -14,23 +13,31 @@ const HeroSection = () => {
           <div className='text-gray-500 text-sm mb-4'>SCALE AI AGENTS WITH ZAPIER</div>
           <h1 className='text-5xl font-semibold mb-10'>The most connected AI orchestration platform</h1>
           <p className='text-gray-500 text-xl'>Build and ship AI workflows in minutes-No IT bottlenecks , no complexity. Just results</p>
-          <div className='buttons flex items-start mt-8 justify-between max-w-1/2 gap-4'>
-          <div className='flex  gap-4'>
-            <LinkButton  onclick={()=>{router.push("/signup")}}>Start free with email
-            <BiLogoGmail className='text-5xl'/>
-            </LinkButton>
-            
-            <PrimaryButton width={{x:10 , y:1}} onClick={()=>{router.push('/signup')}}>Start free with Google</PrimaryButton>
+          <div className='buttons flex items-start mt-8 justify-between  gap-4'>
+            <div className='gap-2 flex'>
+              <div className='mb-3'>
+                <SignInButtons onclick={() => { router.push('/signup') }} color='white'>sign in gmail</SignInButtons>
+              </div>
+              <div>
+                <SignInButtons onclick={() => { router.push('/signup') }} color='amber'>sign in google</SignInButtons>
+              </div>
+            </div>
           </div>
+          <div className='flex'>
+            <Features title='Free forever' subtitle="for core features"></Features>
+            <Features title='More apps' subtitle="than any other platform"></Features>
+            <Features title='Cutting-edge' subtitle="AI features"></Features>
           </div>
         </div>
-       
+
+
+
         <div>
-        <Image src="https://res.cloudinary.com/zapier-media/image/upload/f_auto/q_auto/v1745602193/Homepage/hero-illo_orange_ilrzpu.png" alt="An illustration of several shapes representing AI orchestration"
-        width={900}
-        height={100}
-        className="css-9whsf3"
-         />
+          <Image src="https://res.cloudinary.com/zapier-media/image/upload/f_auto/q_auto/v1745602193/Homepage/hero-illo_orange_ilrzpu.png" alt="An illustration of several shapes representing AI orchestration"
+            width={900}
+            height={100}
+            className="css-9whsf3"
+          />
         </div>
       </div>
     </div>

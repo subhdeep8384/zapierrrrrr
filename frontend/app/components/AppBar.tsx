@@ -21,13 +21,13 @@ const AppBar = () => {
       </div>
       <div className='flex gap-5 font-light text-sm'>
 
-        <LinkButton onclick={() => { }} > Contact Sales</LinkButton>
-        <LinkButton onclick={() => router.push("/")} > Log-In</LinkButton>
+        <LinkButton onclick={() => {router.push('/contact') }} > Contact Sales</LinkButton>
+        <LinkButton onclick={() => router.push("/login")} > Log-In</LinkButton>
         <PrimaryButton onClick={() => { router.push("/signup") }} width={{ x: 5, y: 1 }}>
           Sign-Up
         </PrimaryButton>
 
-      </div>
+      </div>  
     </div>
   )
 }
