@@ -12,25 +12,30 @@ const router = Router();
 
 router.post("/signup" ,async (req , res )=>{
     const parsedData = signUpSchema.safeParse(req.body) ;
-
     if( !parsedData.success ){   
         return res.status(400).json({
-            message : parsedData.error ,
             status : 400 ,
-        })
-        
+        })  
     } 
 
-    const userExists = await prismaClient.user.findFirst({
-        where : {
-            email : parsedData.data?.email ,
+    const userExists = await  prismaClient.user.findFirst({
+        where:{
+            email:parsedData.data.email ,
         } ,
+        select:{
+            id :true  ,
+            username : true ,
+            image : true ,
+        }
     })
 
+
+   
     if( !userExists ){
         const newUser = await prismaClient.user.create({
             data : parsedData.data ,
-        })
+        } 
+    )
 
         return res.status(200).json({
             message : "User created successfully" ,
@@ -38,6 +43,18 @@ router.post("/signup" ,async (req , res )=>{
             data : newUser.username ,
         })
     }
+    const token = jwt.sign({
+        id : userExists?.id ,
+        username : userExists?.username ,
+        image : userExists?.image ,
+    } ,JWT_PASSWORD)
+
+
+    res.cookie("token" , token ) ;
+    
+    return  res.status(200).json(
+        {message :"login successful"}
+    )
 })
 
 router.get("/signin", async (req , res ) =>{
@@ -74,8 +91,9 @@ router.get("/signin", async (req , res ) =>{
 })
 
 router.get("/me" , authMiddleware  , (req , res )=>{
-    const body = req.body ;
-    res.send(body)
+    // @ts-ignore
+    const body = req.user ;
+    return res.send(body)
 })
 
 export const userRouter = router;

@@ -17,6 +17,7 @@ exports.signUpSchema = zod_1.z.object({
     password: zod_1.z.string().min(5),
     name: zod_1.z.string().min(5),
     email: zod_1.z.string().min(5),
+    image: zod_1.z.string().optional()
 });
 exports.zapCreateSchema = zod_1.z.object({
     userId: zod_1.z.number(),

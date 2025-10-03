@@ -12,11 +12,12 @@ export const authMiddleware = (req : Request , res : Response , next : NextFunct
 
     try{
         const decoded = jwt.verify(token , JWT_PASSWORD);
+        console.log("decodedddddd", decoded)
         if(!decoded){
             return res.status(401).json("Unauthorized")
         }
         // @ts-ignore
-        req.id = decoded.id ;
+        req.user = decoded ;
         next()
     }
     catch(e){

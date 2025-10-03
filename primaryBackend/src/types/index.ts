@@ -16,6 +16,7 @@ export const signUpSchema = z.object({
     password : z.string().min(5) ,
     name : z.string().min(5) ,
     email : z.string().min(5) ,
+    image : z.string().optional()
 })
 
 
