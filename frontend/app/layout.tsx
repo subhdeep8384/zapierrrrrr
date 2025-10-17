@@ -31,8 +31,8 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <SessionWrapper>
-         
-        {children}
+          <AppBar />
+          {children}
         </SessionWrapper>
       </body>
     </html>

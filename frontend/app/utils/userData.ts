@@ -7,7 +7,6 @@ export const fetchUser = async () => {
             credentials: "include",
         });
         if (!res.ok) throw new Error("Not authenticated");
-        console.log("The user is :::")
         console.log(res);
         const data = await res.json();
         return data ;

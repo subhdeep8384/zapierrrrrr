@@ -27,35 +27,33 @@ router.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0, function*
     if (!parsedData.success) {
         return res.status(400).json({
             status: 400,
+            message: "Invalid request data",
         });
     }
+    const { email } = parsedData.data;
     const userExists = yield db_1.prismaClient.user.findFirst({
-        where: {
-            email: parsedData.data.email,
-        },
-        select: {
-            id: true,
-            username: true,
-            image: true,
-        }
+        where: { email },
+        select: { id: true, username: true, image: true },
     });
     if (!userExists) {
         const newUser = yield db_1.prismaClient.user.create({
             data: parsedData.data,
         });
-        return res.status(200).json({
+        const token = jsonwebtoken_1.default.sign({ id: newUser.id, username: newUser.username, image: newUser.image }, config_1.JWT_PASSWORD, { expiresIn: "7d" });
+        res.cookie("token", token, { httpOnly: true, sameSite: "lax", path: "/" });
+        return res.status(201).json({
+            status: 201,
             message: "User created successfully",
-            status: 200,
-            data: newUser.username,
+            data: newUser,
         });
     }
-    const token = jsonwebtoken_1.default.sign({
-        id: userExists === null || userExists === void 0 ? void 0 : userExists.id,
-        username: userExists === null || userExists === void 0 ? void 0 : userExists.username,
-        image: userExists === null || userExists === void 0 ? void 0 : userExists.image,
-    }, config_1.JWT_PASSWORD);
-    res.cookie("token", token);
-    return res.status(200).json({ message: "login successful" });
+    const token = jsonwebtoken_1.default.sign({ id: userExists.id, username: userExists.username, image: userExists.image }, config_1.JWT_PASSWORD, { expiresIn: "7d" });
+    res.cookie("token", token, { httpOnly: true, sameSite: "lax", path: "/" });
+    return res.status(200).json({
+        status: 200,
+        message: "Login successful",
+        data: userExists,
+    });
 }));
 router.get("/signin", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const body = req.body;

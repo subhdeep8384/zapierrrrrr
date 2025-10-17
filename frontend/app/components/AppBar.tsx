@@ -16,7 +16,9 @@ const AppBar = () => {
   useEffect(() => {
     const getUser = async () => {
       const userData = await fetchUser();
+      console.log("USER DATA IS : ", userData);
       setUser(userData);
+      localStorage.setItem("user", JSON.stringify(userData));
     };
     getUser();
   }, []);
@@ -36,7 +38,9 @@ const AppBar = () => {
 
       <div className="flex gap-5 font-light text-sm">
         {user ? (
-          <UserRenderer user={user}></UserRenderer>
+          <div className="cursor-pointer" onClick={() => {router.push("/dashboard")}}>
+            <UserRenderer user={user}></UserRenderer>
+          </div>
         ) : (
           auth === 0 && (
             <>

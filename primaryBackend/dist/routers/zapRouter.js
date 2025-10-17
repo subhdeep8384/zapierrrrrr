@@ -16,17 +16,13 @@ const types_1 = require("../types");
 const db_1 = require("../db");
 const router = (0, express_1.Router)();
 router.post("/", middleware_1.authMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("indide / route");
     const body = req.body;
-    console.log(body);
     const parsedData = types_1.zapCreateSchema.safeParse(body);
     if (!parsedData.success) {
         return res.status(400).json(parsedData.error);
     }
     // @ts-ignore
     const userId = req.id;
-    console.log(userId);
-    console.log(parsedData.data);
     const { availableTriggerId, actions } = parsedData.data;
     yield db_1.prismaClient.$transaction((tx) => __awaiter(void 0, void 0, void 0, function* () {
         const zap = yield tx.zap.create({
@@ -62,10 +58,9 @@ router.post("/", middleware_1.authMiddleware, (req, res) => __awaiter(void 0, vo
         });
     }));
 }));
-router.get("/", middleware_1.authMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("i am here");
+router.get("/allzaps/:userId", middleware_1.authMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     // @ts-ignore
-    const id = req.id;
+    const id = parseInt(req.params.userId);
     const zaps = yield db_1.prismaClient.zap.findMany({
         where: {
             userId: id
@@ -90,7 +85,6 @@ router.get("/:zapId", middleware_1.authMiddleware, (req, res) => __awaiter(void 
     const zap = yield db_1.prismaClient.zap.findUnique({
         where: {
             id: req.params.zapId,
-            userId: req.body.userId
         }
     });
     res.send(zap);

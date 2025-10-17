@@ -1,1 +1,1 @@
-{"root":["./src/config.ts","./src/index.ts","./src/db/index.ts","./src/routers/middleware.ts","./src/routers/userrouter.ts","./src/routers/zaprouter.ts","./src/types/index.ts"],"version":"5.8.3"}
+{"root":["./src/config.ts","./src/index.ts","./src/db/index.ts","./src/routers/action.ts","./src/routers/middleware.ts","./src/routers/triggerrouter.ts","./src/routers/userrouter.ts","./src/routers/zaprouter.ts","./src/types/index.ts"],"version":"5.8.3"}

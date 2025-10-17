@@ -1,11 +1,12 @@
 "use client"
 import GoogleButton from '@/app/components/Buttons/GoogleButton';
 import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
 
 const Page = () => {
-
+    const router = useRouter()
     const [form, setForm] = useState({ username: "", password: "", name: "", email: "" });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -19,12 +20,12 @@ const Page = () => {
             password: form.password,
             name: form.name,
             email: form.email,
-        });
-
+        } )
+        router.push("/")
         if (res?.error) {
             console.log("Error:", res.error);
         } else {
-            window.location.href = "/";
+            router.push("/")
         }
     };
     return <div className='border-r-2 border-l-2 border-b-2 mx-10 h-[100%]'>

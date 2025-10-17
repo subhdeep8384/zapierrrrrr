@@ -9,53 +9,61 @@ dotenv.config();
 
 
 const router = Router();
-
-router.post("/signup" ,async (req , res )=>{
-    const parsedData = signUpSchema.safeParse(req.body) ;
-    if( !parsedData.success ){   
-        return res.status(400).json({
-            status : 400 ,
-        })  
-    } 
-
-    const userExists = await  prismaClient.user.findFirst({
-        where:{
-            email:parsedData.data.email ,
-        } ,
-        select:{
-            id :true  ,
-            username : true ,
-            image : true ,
-        }
-    })
-
-
+router.post("/signup", async (req, res) => {
    
-    if( !userExists ){
-        const newUser = await prismaClient.user.create({
-            data : parsedData.data ,
-        } 
-    )
-
-        return res.status(200).json({
-            message : "User created successfully" ,
-            status : 200 ,
-            data : newUser.username ,
-        })
+    const parsedData = signUpSchema.safeParse(req.body);
+    if (!parsedData.success) {
+      return res.status(400).json({
+        status: 400,
+        message: "Invalid request data",
+      });
     }
-    const token = jwt.sign({
-        id : userExists?.id ,
-        username : userExists?.username ,
-        image : userExists?.image ,
-    } ,JWT_PASSWORD)
+  
+    const { email } = parsedData.data;
+  
+    const userExists = await prismaClient.user.findFirst({
+      where: { email },
+      select: { id: true, username: true, image: true },
+    });
+  
+    if (!userExists) {
+     
+      const newUser = await prismaClient.user.create({
+        data: parsedData.data,
+      });
+  
+   
+      const token = jwt.sign(
+        { id: newUser.id, username: newUser.username, image: newUser.image },
+        JWT_PASSWORD,
+        { expiresIn: "7d" }
+      );
+  
+      res.cookie("token", token, { httpOnly: true, sameSite: "lax", path: "/" });
+  
+      return res.status(201).json({
+        status: 201,
+        message: "User created successfully",
+        data: newUser,
+      });
+    }
+  
+  
+    const token = jwt.sign(
+      { id: userExists.id, username: userExists.username, image: userExists.image },
+      JWT_PASSWORD,
+      { expiresIn: "7d" }
+    );
+  
+    res.cookie("token", token, { httpOnly: true, sameSite: "lax", path: "/" });
+  
+    return res.status(200).json({
+      status: 200,
+      message: "Login successful",
+      data: userExists, 
+    });
+  });
 
-
-    res.cookie("token" , token ) ;
-    
-    return  res.status(200).json(
-        {message :"login successful"}
-    )
-})
 
 router.get("/signin", async (req , res ) =>{
     const body = req.body;

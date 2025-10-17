@@ -7,9 +7,9 @@ import { prismaClient } from "../db";
 const router = Router();
 
 router.post("/" , authMiddleware ,async (req , res )=>{
-    console.log("indide / route")
+ 
     const body = req.body ;
-    console.log(body)
+   
     const parsedData = zapCreateSchema.safeParse(body);
 
     if(!parsedData.success){
@@ -17,8 +17,8 @@ router.post("/" , authMiddleware ,async (req , res )=>{
     }
     // @ts-ignore
     const userId = req.id
-    console.log(userId)
-    console.log(parsedData.data)
+  
+   
     const { availableTriggerId, actions } = parsedData.data;
 
 
@@ -60,15 +60,16 @@ router.post("/" , authMiddleware ,async (req , res )=>{
 
 })
 
-router.get("/" , authMiddleware , async (req , res )=>{
-    console.log("i am here")
+router.get("/allzaps/:userId" , authMiddleware , async (req , res )=>{
+    
     // @ts-ignore
-   const id = req.id ;
+   const id = parseInt(req.params.userId) ;
    const zaps = await prismaClient.zap.findMany({
     where :{
         userId : id
     } , include : {
         actions : {
+
             include :{
                 type : true
             }
@@ -80,21 +81,18 @@ router.get("/" , authMiddleware , async (req , res )=>{
         }
     }
    })
-
    res.send({
     zaps : zaps
    })
 })
 
 router.get("/:zapId" , authMiddleware ,async (req , res )=>{ 
-
     const zap = await prismaClient.zap.findUnique({
         where :{
             id : req.params.zapId ,
-            userId : req.body.userId as unknown as number
         }
     })
-
+  
     res.send(zap)
 })
 export const zapRouter = router;

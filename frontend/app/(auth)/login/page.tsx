@@ -2,28 +2,28 @@
 import React from 'react'
 import { signIn } from 'next-auth/react';
 
-
 const Page = () => {
   return (
-
-    <div className='border-r-2  border-l-2 border-b-2 h-[100%] mx-5 p-8 lg:p-30 '>
-      <div className='flex flex-col lg:flex-row gap-19'>
-        <div className='text mt-50'>
-          <div className='font-bold text-6xl mb-10'>Automate across your teams</div>
-          <div className='text-xl text-gray-500 mb-12'>SZapier Enterprise empowers everyone in your business to securely automate their work in minutes, not months—no coding required.</div>
+    <div className='border-r-2 border-l-2 border-b-2 min-h-screen mx-5 p-8 lg:p-30 flex items-center'>
+      <div className='flex flex-col lg:flex-row gap-12 w-full'>
+        {/* Left Text Section */}
+        <div className='flex-1 text-center lg:text-left'>
+          <h1 className='font-bold text-6xl mb-10'>Automate across your teams</h1>
+          <p className='text-xl text-gray-500 mb-12'>
+            SZapier Enterprise empowers everyone in your business to securely automate their work in minutes, not months—no coding required.
+          </p>
         </div>
-        <div className=' h-120 bg-white-400 lg:w-2/5  border-2'>
-          <form
-            action={async () => {
-              const token =  await signIn("google" , { callbackUrl: "/" })
-            }}
-          >
-            <button type="submit">Sign in</button>
-          </form>
 
+        {/* Right Form Section */}
+        <div className='flex-1 flex justify-center items-center'>
+          <button
+            onClick={() => signIn("google", { callbackUrl: "/" })}
+            className='font-bold text-2xl bg-blue-600 text-white border-2 rounded-2xl px-6 py-4 hover:bg-blue-700 transition-colors duration-200'
+          >
+            Sign in with Google
+          </button>
         </div>
       </div>
-
     </div>
   )
 }

@@ -13,7 +13,6 @@ const authMiddleware = (req, res, next) => {
     }
     try {
         const decoded = jsonwebtoken_1.default.verify(token, config_1.JWT_PASSWORD);
-        console.log("decodedddddd", decoded);
         if (!decoded) {
             return res.status(401).json("Unauthorized");
         }

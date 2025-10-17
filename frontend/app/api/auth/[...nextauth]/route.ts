@@ -29,6 +29,7 @@ export const authOptions = {
         })
 
         const user = await res.json()
+        
         if (res.ok && user) {
           return user
         }
@@ -40,7 +41,6 @@ export const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
 
   callbacks: {
-    // Runs when user logs in
     async signIn({
       user,
       account,
@@ -60,11 +60,14 @@ export const authOptions = {
             name: user.name,
             email: user.email,
             image: user.image,
-            password : "Loged in using google",
+            password : "*******************",
             username: user.name,
           }), 
           credentials: "include",
         })
+        const response = await res.json()
+        user.id = response.data?.id || response.id;
+        
         const setCookie = res.headers.get("set-cookie")
         if (setCookie) {
           const token = setCookie.split(";")[0].split("=")[1];
@@ -73,14 +76,21 @@ export const authOptions = {
       }
       return true
     },
+    async jwt({ token, user }) {
+      // Runs on sign-in
+      if (user?.id) token.id = user.id;
+      if (user?.name) token.name = user.name;
+      if (user?.email) token.email = user.email;
+      if (user?.image) token.image = user.image;
+      return token;
+    },
     async session({ session, token }) {
-      if (token) {
-        session.user = {
-          ...session.user,
-          id: token.sub, 
-        }
-      }
-      return session
+    
+      session.user.id = token.id;
+      session.user.name = token.name;
+      session.user.email = token.email;
+      session.user.image = token.image;
+      return session;
     },
   },
 }
