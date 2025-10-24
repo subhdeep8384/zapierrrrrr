@@ -1,6 +1,8 @@
 "use client"
 import React from 'react'
 import { signIn } from 'next-auth/react';
+import toast from 'react-hot-toast';
+
 
 const Page = () => {
   return (
@@ -17,7 +19,17 @@ const Page = () => {
         {/* Right Form Section */}
         <div className='flex-1 flex justify-center items-center'>
           <button
-            onClick={() => signIn("google", { callbackUrl: "/" })}
+            onClick={() => {
+              const   handle  = async () => { 
+                return new Promise(async (resolve) => {
+                  const result = await signIn("google", { callbackUrl: "/dashboard" });
+                  if ( result ){
+                    setTimeout(resolve, 10000);
+                  }else{}
+                })
+              }
+              handle().then(() => {toast.success("Successfully logged in")})
+            }}
             className='font-bold text-2xl bg-blue-600 text-white border-2 rounded-2xl px-6 py-4 hover:bg-blue-700 transition-colors duration-200'
           >
             Sign in with Google

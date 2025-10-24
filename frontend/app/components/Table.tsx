@@ -91,9 +91,9 @@ export const columns: ColumnDef<Zap>[] = [
     cell: ({ row }) => <div>{row.getValue("id")}</div>,
   },
   {
-    accessorKey: "triggerId",
-    header: "Trigger ID",
-    cell: ({ row }) => <div>{row.getValue("triggerId")}</div>,
+    accessorKey: "WebHookUrl",
+    header: "Hook url",
+    cell: ({ row }) => <div>{`https://localhost:5001/hooks/catch/${row.getValue("userId")}/${row.getValue("id")}`}</div>,
   },
   {
     accessorKey: "userId",

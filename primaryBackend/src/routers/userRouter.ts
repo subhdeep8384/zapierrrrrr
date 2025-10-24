@@ -12,6 +12,7 @@ const router = Router();
 router.post("/signup", async (req, res) => {
    
     const parsedData = signUpSchema.safeParse(req.body);
+    
     if (!parsedData.success) {
       return res.status(400).json({
         status: 400,

@@ -23,7 +23,7 @@ export const signUpSchema = z.object({
 export const zapCreateSchema = z.object({
     userId : z.number() ,
     availableTriggerId : z.string() ,
-    triggerMetadata : z.object().optional() ,
+    triggerMetadata : z.object(),
     actions : z.array(z.object({
         availableActionId : z.string() ,
         actionMetadata : z.object().optional() ,

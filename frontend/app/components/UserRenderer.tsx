@@ -11,7 +11,7 @@ const UserRenderer = ({ user }: { user: { username: string; image: string } }) =
       <div className="font-medium">{username}</div>
       <div>
         <Image
-          src={ "https://cdn-icons-png.freepik.com/512/0/93.png"}
+          src={ session?.user?.image || user?.image || session?.image || session}
           alt="user"
           width={30}
           height={50}

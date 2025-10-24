@@ -18,7 +18,6 @@ const db_1 = require("../db");
 const router = express_1.default.Router();
 router.get("/available", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const availableTrigger = yield db_1.prismaClient.availableTrigger.findMany({});
-    console.log(availableTrigger);
     res.send(availableTrigger);
 }));
 exports.triggerRouter = router;

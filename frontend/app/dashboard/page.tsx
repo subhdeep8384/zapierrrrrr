@@ -4,9 +4,10 @@ import { useSession } from 'next-auth/react'
 import React, { useEffect, useState } from 'react'
 import DarkButton from '../components/Buttons/DarkButton'
 import { DataTableDemo } from "../components/Table"
-import { SkeletonCard } from "../components/Heroskeleton"
-import Skeleton from 'react-loading-skeleton'
+
 import { useRouter } from "next/navigation"
+import BeatLoader from "react-spinners/BeatLoader";
+import MoonLoader from "react-spinners/MoonLoader";
 
 
 interface Zap {
@@ -43,7 +44,7 @@ function useZaps() {
       .then((res) => setZaps(res.data?.zaps || []))
       .catch((err) => console.error("Failed to fetch zaps:", err))
       .finally(() => setLoading(false));
-  }, [status, session?.user?.id , zaps]); 
+  }, [session]); 
 
   return { loading, zaps };
 } 
@@ -53,7 +54,10 @@ const Page = () => {
   const { loading, zaps } = useZaps()
   const { data: session, status } = useSession()
 
-  if (status === "loading") return <p>Loading...</p>
+  if (status === "loading") return <div className="flex justify-center items-center text-7xl  h-full ">
+    <BeatLoader />
+  </div>
+  
   if (!session) return <p>Not signed in</p>
   const onclickHandler = () => {
     router.push('/zap/create')
@@ -65,7 +69,7 @@ const Page = () => {
         <div> <DarkButton onClick={onclickHandler}>Create zaps</DarkButton></div>
       </div>
 
-      {loading ? < SkeletonCard/> : <ZapsTable zaps={zaps} />}
+      {loading ?<div className="flex justify-center items-center mt-20"> < MoonLoader  size={100}/></div> : <ZapsTable zaps={zaps} />}
     </div>
   )
 }

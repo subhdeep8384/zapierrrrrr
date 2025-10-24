@@ -22,6 +22,7 @@ export const authOptions = {
         email: { label: "Email", type: "email", placeholder: "enter your email" },
       },
       async authorize(credentials) {
+        console.log("Inside authorise fn")
         const res = await fetch("http://localhost:5000/api/v1/user/signup", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -31,6 +32,8 @@ export const authOptions = {
         const user = await res.json()
         
         if (res.ok && user) {
+          console.log("inside authorize in if check ")
+          console.log("User is ", user)
           return user
         }
         return null
@@ -51,6 +54,10 @@ export const authOptions = {
       email?: { verificationRequest?: boolean }
       credentials?: Record<string, unknown>
     } ) {
+      console.log("indside sign in")
+      if (account?.provider === "credentials") {
+        console.log("INSIDE CREDENTIALS PROVIDER")
+      }
       if (account?.provider === "google") {
         // Save Google user in your DB
         const res =  await fetch("http://localhost:5000/api/v1/user/signup", {
@@ -60,14 +67,15 @@ export const authOptions = {
             name: user.name,
             email: user.email,
             image: user.image,
-            password : "*******************",
             username: user.name,
+            password : "logeg in by google",
           }), 
           credentials: "include",
         })
         const response = await res.json()
+
         user.id = response.data?.id || response.id;
-        
+        user.image = response.data?.image || response.image;
         const setCookie = res.headers.get("set-cookie")
         if (setCookie) {
           const token = setCookie.split(";")[0].split("=")[1];
@@ -77,6 +85,8 @@ export const authOptions = {
       return true
     },
     async jwt({ token, user }) {
+      console.log("inside jwt" ,token)
+      console.log("The user is :::" ,user)
       // Runs on sign-in
       if (user?.id) token.id = user.id;
       if (user?.name) token.name = user.name;
@@ -85,11 +95,11 @@ export const authOptions = {
       return token;
     },
     async session({ session, token }) {
-    
+      console.log("inside session" , session)
       session.user.id = token.id;
       session.user.name = token.name;
       session.user.email = token.email;
-      session.user.image = token.image;
+      session.user.image = token.picture;
       return session;
     },
   },
