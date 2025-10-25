@@ -20,7 +20,12 @@ const PORT = 5001;
 const client = new client_1.PrismaClient();
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
+app.use(express_1.default.urlencoded({ extended: true }));
+app.get('/', (req, res) => {
+    res.send("Hello World");
+});
 app.post("/hooks/catch/:userId/:zapId", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("inside hookls");
     const userId = req.params.userId;
     const zapId = req.params.zapId;
     const body = req.body;

@@ -85,8 +85,6 @@ export const authOptions = {
       return true
     },
     async jwt({ token, user }) {
-      console.log("inside jwt" ,token)
-      console.log("The user is :::" ,user)
       // Runs on sign-in
       if (user?.id) token.id = user.id;
       if (user?.name) token.name = user.name;
@@ -95,7 +93,6 @@ export const authOptions = {
       return token;
     },
     async session({ session, token }) {
-      console.log("inside session" , session)
       session.user.id = token.id;
       session.user.name = token.name;
       session.user.email = token.email;

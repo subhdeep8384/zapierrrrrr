@@ -9,8 +9,13 @@ const client = new PrismaClient()
 const app = express() ;
 
 app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 
+app.get('/' , (req , res )=> {
+    res.send("Hello World")
+})
 app.post("/hooks/catch/:userId/:zapId" ,async (req , res ) => { 
+    console.log("inside hookls")
     const userId = req.params.userId ;
     const zapId = req.params.zapId ;
     const body = req.body ;
